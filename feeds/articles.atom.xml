@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Mnemosyne Semantic</title><link href="/" rel="alternate"></link><link href="/feeds/articles.atom.xml" rel="self"></link><id>/</id><updated>2013-05-23T20:05:00+10:00</updated><entry><title>web2py deployment</title><link href="/web2py-deployment.html" rel="alternate"></link><updated>2013-05-23T20:05:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-05-23:web2py-deployment.html</id><summary type="html">&lt;div class="section" id="todo"&gt;
+&lt;h2&gt;Todo&lt;/h2&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Update article to reflect new document path: /var/www instead of /home/www-data&lt;/li&gt;
+&lt;li&gt;Update the webserver ports: 8080 and 8443 instead of the default 80 and 443.
+This also include changes to the apache config file and ports.conf (not yet documented)&lt;/li&gt;
+&lt;li&gt;postgres user config and database setup including dump and restore of data&lt;/li&gt;
+&lt;li&gt;enable secure access only in web2py model db.py&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="platform"&gt;
+&lt;h2&gt;Platform&lt;/h2&gt;
+&lt;p&gt;Linux distro depends on personal preference but I recommend Debian stable.
+Debian 6.0 or Debian 7.0 &amp;quot;Wheezy&amp;quot; as of May 4th 2013.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="applications"&gt;
+&lt;h2&gt;Applications&lt;/h2&gt;
+&lt;p&gt;web2py offers an installation script to install apache+python+mod_wsgi+web2py+postgresql from scratch.
+Application versions that will be retrieved are outdated and the proposed document root is not optimal.
+Recommendation is to use the script as a guideline.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;wget http://web2py.googlecode.com/hg/scripts/setup-web2py-ubuntu.sh&lt;/span&gt;
+&lt;span class="go"&gt;chmod +x setup-web2py-ubuntu.sh&lt;/span&gt;
+&lt;span class="go"&gt;sudo ./setup-web2py-ubuntu.sh&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Below are the proposed packages:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;apt-get -y install ssh&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install zip unzip&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install tar&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install openssh-server&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install build-essential&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install python2.5&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install ipython&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install python-dev&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install postgresql&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install apache2&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install libapache2-mod-wsgi&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install python2.5-psycopg2&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install postfix&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install wget&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install python-matplotlib&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install python-reportlab&lt;/span&gt;
+&lt;span class="go"&gt;apt-get -y install mercurial&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I recommend installing python2.7 with the corresponding postgres driver (pyscopg2).&lt;/p&gt;
+&lt;p&gt;Packages postfix, wget, python-matplotlib, python-reportlab and mercurial seem optional imho.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="postgresql"&gt;
+&lt;h2&gt;Postgresql&lt;/h2&gt;
+&lt;p&gt;Tested with version 8.4&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="apache"&gt;
+&lt;h2&gt;Apache&lt;/h2&gt;
+&lt;div class="section" id="modules"&gt;
+&lt;h3&gt;modules&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;a2enmod ssl&lt;/span&gt;
+&lt;span class="go"&gt;a2enmod proxy&lt;/span&gt;
+&lt;span class="go"&gt;a2enmod proxy_http&lt;/span&gt;
+&lt;span class="go"&gt;a2enmod headers&lt;/span&gt;
+&lt;span class="go"&gt;a2enmod expires&lt;/span&gt;
+&lt;span class="go"&gt;a2enmod wsgi&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="self-signed-certicate"&gt;
+&lt;h3&gt;self-signed certicate&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;mkdir /etc/apache2/ssl&lt;/span&gt;
+&lt;span class="go"&gt;openssl genrsa 1024 &amp;gt; /etc/apache2/ssl/self_signed.key&lt;/span&gt;
+&lt;span class="go"&gt;chmod 400 /etc/apache2/ssl/self_signed.key&lt;/span&gt;
+&lt;span class="go"&gt;openssl req -new -x509 -nodes -sha1 -days 365 -key /etc/apache2/ssl/self_signed.key &amp;gt; /etc/apache2/ssl/self_signed.cert&lt;/span&gt;
+&lt;span class="go"&gt;openssl x509 -noout -fingerprint -text &amp;lt; /etc/apache2/ssl/self_signed.cert &amp;gt; /etc/apache2/ssl/self_signed.info&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="mod-wsgi"&gt;
+&lt;h3&gt;mod_wsgi&lt;/h3&gt;
+&lt;p&gt;Replace /etc/apache2/sites-available/default with the config below.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;NameVirtualHost&lt;/span&gt; *:80
+&lt;span class="nb"&gt;NameVirtualHost&lt;/span&gt; *:443
+&lt;span class="c"&gt;# If the WSGIDaemonProcess directive is specified outside of all virtual&lt;/span&gt;
+&lt;span class="c"&gt;# host containers, any WSGI application can be delegated to be run within&lt;/span&gt;
+&lt;span class="c"&gt;# that daemon process group.&lt;/span&gt;
+&lt;span class="c"&gt;# If the WSGIDaemonProcess directive is specified&lt;/span&gt;
+&lt;span class="c"&gt;# within a virtual host container, only WSGI applications associated with&lt;/span&gt;
+&lt;span class="c"&gt;# virtual hosts with the same server name as that virtual host can be&lt;/span&gt;
+&lt;span class="c"&gt;# delegated to that set of daemon processes.&lt;/span&gt;
+&lt;span class="nb"&gt;WSGIDaemonProcess&lt;/span&gt; web2py &lt;span class="k"&gt;user&lt;/span&gt;=www-data &lt;span class="k"&gt;group&lt;/span&gt;=www-data
+
+&lt;span class="nt"&gt;&amp;lt;VirtualHost&lt;/span&gt; &lt;span class="s"&gt;*:80&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nb"&gt;WSGIProcessGroup&lt;/span&gt; web2py
+  &lt;span class="nb"&gt;WSGIScriptAlias&lt;/span&gt; / &lt;span class="sx"&gt;/home/www-data/web2py/wsgihandler.py&lt;/span&gt;
+  &lt;span class="nb"&gt;WSGIPassAuthorization&lt;/span&gt; &lt;span class="k"&gt;On&lt;/span&gt;
+
+  &lt;span class="nt"&gt;&amp;lt;Directory&lt;/span&gt; &lt;span class="s"&gt;/home/www-data/web2py&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nb"&gt;AllowOverride&lt;/span&gt; &lt;span class="k"&gt;None&lt;/span&gt;
+    &lt;span class="nb"&gt;Order&lt;/span&gt; Allow,Deny
+    &lt;span class="nb"&gt;Deny&lt;/span&gt; from &lt;span class="k"&gt;all&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;Files&lt;/span&gt; &lt;span class="s"&gt;wsgihandler.py&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="nb"&gt;Allow&lt;/span&gt; from &lt;span class="k"&gt;all&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/Files&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/Directory&amp;gt;&lt;/span&gt;
+
+  &lt;span class="nb"&gt;AliasMatch&lt;/span&gt; ^/([^/]+)/static/(.*) \
+           &lt;span class="err"&gt;/home/www-data/web2py/applications/$1/static/$2&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;Directory&lt;/span&gt; &lt;span class="s"&gt;/home/www-data/web2py/applications/*/static/&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nb"&gt;Options&lt;/span&gt; -Indexes
+    &lt;span class="nb"&gt;Order&lt;/span&gt; Allow,Deny
+    &lt;span class="nb"&gt;Allow&lt;/span&gt; from &lt;span class="k"&gt;all&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/Directory&amp;gt;&lt;/span&gt;
+
+  &lt;span class="nt"&gt;&amp;lt;Location&lt;/span&gt; &lt;span class="s"&gt;/admin&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nb"&gt;Deny&lt;/span&gt; from &lt;span class="k"&gt;all&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/Location&amp;gt;&lt;/span&gt;
+
+  &lt;span class="nt"&gt;&amp;lt;LocationMatch&lt;/span&gt; &lt;span class="s"&gt;^/([^/]+)/appadmin&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nb"&gt;Deny&lt;/span&gt; from &lt;span class="k"&gt;all&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/LocationMatch&amp;gt;&lt;/span&gt;
+
+  &lt;span class="nb"&gt;CustomLog&lt;/span&gt; &lt;span class="sx"&gt;/var/log/apache2/access.log&lt;/span&gt; common
+  &lt;span class="nb"&gt;ErrorLog&lt;/span&gt; &lt;span class="sx"&gt;/var/log/apache2/error.log&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/VirtualHost&amp;gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;VirtualHost&lt;/span&gt; &lt;span class="s"&gt;*:443&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nb"&gt;SSLEngine&lt;/span&gt; &lt;span class="k"&gt;on&lt;/span&gt;
+  &lt;span class="nb"&gt;SSLCertificateFile&lt;/span&gt; &lt;span class="sx"&gt;/etc/apache2/ssl/self_signed.cert&lt;/span&gt;
+  &lt;span class="nb"&gt;SSLCertificateKeyFile&lt;/span&gt; &lt;span class="sx"&gt;/etc/apache2/ssl/self_signed.key&lt;/span&gt;
+
+  &lt;span class="nb"&gt;WSGIProcessGroup&lt;/span&gt; web2py
+  &lt;span class="nb"&gt;WSGIScriptAlias&lt;/span&gt; / &lt;span class="sx"&gt;/home/www-data/web2py/wsgihandler.py&lt;/span&gt;
+  &lt;span class="nb"&gt;WSGIPassAuthorization&lt;/span&gt; &lt;span class="k"&gt;On&lt;/span&gt;
+
+  &lt;span class="nt"&gt;&amp;lt;Directory&lt;/span&gt; &lt;span class="s"&gt;/home/www-data/web2py&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nb"&gt;AllowOverride&lt;/span&gt; &lt;span class="k"&gt;None&lt;/span&gt;
+    &lt;span class="nb"&gt;Order&lt;/span&gt; Allow,Deny
+    &lt;span class="nb"&gt;Deny&lt;/span&gt; from &lt;span class="k"&gt;all&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;Files&lt;/span&gt; &lt;span class="s"&gt;wsgihandler.py&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="nb"&gt;Allow&lt;/span&gt; from &lt;span class="k"&gt;all&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/Files&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/Directory&amp;gt;&lt;/span&gt;
+
+  &lt;span class="nb"&gt;AliasMatch&lt;/span&gt; ^/([^/]+)/static/(.*) \
+        &lt;span class="err"&gt;/home/www-data/web2py/applications/$1/static/$2&lt;/span&gt;
+
+  &lt;span class="nt"&gt;&amp;lt;Directory&lt;/span&gt; &lt;span class="s"&gt;/home/www-data/web2py/applications/*/static/&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nb"&gt;Options&lt;/span&gt; -Indexes
+    &lt;span class="nb"&gt;ExpiresActive&lt;/span&gt; &lt;span class="k"&gt;On&lt;/span&gt;
+    &lt;span class="nb"&gt;ExpiresDefault&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;access plus 1 hour&amp;quot;&lt;/span&gt;
+    &lt;span class="nb"&gt;Order&lt;/span&gt; Allow,Deny
+    &lt;span class="nb"&gt;Allow&lt;/span&gt; from &lt;span class="k"&gt;all&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/Directory&amp;gt;&lt;/span&gt;
+
+  &lt;span class="nb"&gt;CustomLog&lt;/span&gt; &lt;span class="sx"&gt;/var/log/apache2/access.log&lt;/span&gt; common
+  &lt;span class="nb"&gt;ErrorLog&lt;/span&gt; &lt;span class="sx"&gt;/var/log/apache2/error.log&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/VirtualHost&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="restart-apache"&gt;
+&lt;h3&gt;restart apache&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;/etc/init.d/apache2 restart&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="web2py-admin-access"&gt;
+&lt;h3&gt;web2py admin access&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;cd /home/www-data/web2py&lt;/span&gt;
+&lt;span class="go"&gt;sudo -u www-data python -c &amp;quot;from gluon.widget import console; console();&amp;quot;&lt;/span&gt;
+&lt;span class="go"&gt;sudo -u www-data python -c &amp;quot;from gluon.main import save_password; save_password(raw_input(&amp;#39;admin password: &amp;#39;),443)&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="section" id="web2py"&gt;
+&lt;h2&gt;web2py&lt;/h2&gt;
+&lt;p&gt;Important: download the latest developer version instead of the regular stable release.
+The stable version has a bug which breaks the app and this seems to be fixed in the latest test release.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="go"&gt;cd /home&lt;/span&gt;
+&lt;span class="go"&gt;mkdir www-data&lt;/span&gt;
+&lt;span class="go"&gt;cd www-data&lt;/span&gt;
+&lt;span class="go"&gt;cd /home/www-data/&lt;/span&gt;
+&lt;span class="go"&gt;sudo wget http://web2py.com/examples/static/web2py_src.zip&lt;/span&gt;
+&lt;span class="go"&gt;sudo unzip web2py_src.zip&lt;/span&gt;
+&lt;span class="go"&gt;sudo chown -R www-data:www-data /home/www-data/web2py&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+</summary><category term="web2py"></category></entry><entry><title>Postgresql - adding serial id field ex post facto</title><link href="/postgresql-adding-serial-id-field-ex-post-facto.html" rel="alternate"></link><updated>2013-05-14T12:15:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-05-14:postgresql-adding-serial-id-field-ex-post-facto.html</id><summary type="html">&lt;p&gt;How to add an autoincrement field in a given postgresql table retrospectively?&lt;/p&gt;
+&lt;p&gt;Tested in version 8.4.&lt;/p&gt;
+&lt;p&gt;the table consists of two fields which are both references to the id field
+in other tables but there was no need for an ID field.
+A situation came up where we require to have a PK ID field with an automatic
+incremental integer value.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Before&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;cmdb=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;\d&lt;/span&gt; &lt;span class="ss"&gt;tblasset_sw&lt;/span&gt;
+
+&lt;span class="go"&gt;    Table &amp;quot;public.tblasset_sw&amp;quot;&lt;/span&gt;
+&lt;span class="go"&gt;Column  |  Type   | Modifiers&lt;/span&gt;
+&lt;span class="go"&gt;----------+---------+-----------&lt;/span&gt;
+&lt;span class="go"&gt;asset_id | integer |&lt;/span&gt;
+&lt;span class="go"&gt;sw_id    | integer |&lt;/span&gt;
+&lt;span class="go"&gt;Foreign-key constraints:&lt;/span&gt;
+&lt;span class="go"&gt;    &amp;quot;tblasset_sw_asset_id_fkey&amp;quot; FOREIGN KEY (asset_id) REFERENCES tblasset(asset_id)&lt;/span&gt;
+&lt;span class="go"&gt;    &amp;quot;tblasset_sw_sw_id_fkey&amp;quot; FOREIGN KEY (sw_id) REFERENCES tblsw(sw_id)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Steps&lt;/em&gt;&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Create a sequence table&lt;/li&gt;
+&lt;li&gt;Add the new ID column&lt;/li&gt;
+&lt;li&gt;Populate the id field with an autoincrement number for the existing records&lt;/li&gt;
+&lt;li&gt;Alter the ID column to automatically assign the next available value when creating new records&lt;/li&gt;
+&lt;li&gt;Add an extra 'NOT NULL' constraint (this could probably have been added on creation of the new column as well)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;cmdb=&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;create&lt;/span&gt; &lt;span class="k"&gt;SEQUENCE&lt;/span&gt; &lt;span class="n"&gt;tblasset_sw_asset_sw_id_seq&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="gp"&gt;cmdb=&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;ALTER&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="n"&gt;tblasset_sw&lt;/span&gt; &lt;span class="k"&gt;ADD&lt;/span&gt; &lt;span class="n"&gt;asset_sw_id&lt;/span&gt; &lt;span class="nb"&gt;INT&lt;/span&gt; &lt;span class="k"&gt;UNIQUE&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="gp"&gt;cmdb=&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;UPDATE&lt;/span&gt; &lt;span class="n"&gt;tblasset_sw&lt;/span&gt; &lt;span class="k"&gt;SET&lt;/span&gt; &lt;span class="n"&gt;asset_sw_id&lt;/span&gt;  &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;NEXTVAL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;tblasset_sw_asset_sw_id_seq&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="gp"&gt;cmdb=&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;ALTER&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="k"&gt;ONLY&lt;/span&gt; &lt;span class="n"&gt;tblasset_sw&lt;/span&gt; &lt;span class="k"&gt;ALTER&lt;/span&gt; &lt;span class="k"&gt;COLUMN&lt;/span&gt; &lt;span class="n"&gt;asset_sw_id&lt;/span&gt; &lt;span class="k"&gt;SET&lt;/span&gt; &lt;span class="k"&gt;DEFAULT&lt;/span&gt; &lt;span class="n"&gt;nextval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;tblasset_sw_asset_sw_id_seq&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;regclass&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="gp"&gt;cmdb=&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;ALTER&lt;/span&gt; &lt;span class="k"&gt;TABLE&lt;/span&gt; &lt;span class="k"&gt;ONLY&lt;/span&gt; &lt;span class="n"&gt;tblasset_sw&lt;/span&gt; &lt;span class="k"&gt;ALTER&lt;/span&gt; &lt;span class="k"&gt;COLUMN&lt;/span&gt; &lt;span class="n"&gt;asset_sw_id&lt;/span&gt; &lt;span class="k"&gt;SET&lt;/span&gt; &lt;span class="k"&gt;NOT&lt;/span&gt; &lt;span class="k"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;After&lt;/em&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;cmdb=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;\d&lt;/span&gt; &lt;span class="ss"&gt;tblasset_sw&lt;/span&gt;
+&lt;span class="go"&gt;                                Table &amp;quot;public.tblasset_sw&amp;quot;&lt;/span&gt;
+&lt;span class="go"&gt;Column    |  Type   |                             Modifiers&lt;/span&gt;
+&lt;span class="go"&gt;-------------+---------+-------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="go"&gt;asset_id    | integer |&lt;/span&gt;
+&lt;span class="go"&gt;sw_id       | integer |&lt;/span&gt;
+&lt;span class="go"&gt;asset_sw_id | integer | not null default nextval(&amp;#39;tblasset_sw_asset_sw_id_seq&amp;#39;::regclass)&lt;/span&gt;
+&lt;span class="go"&gt;Indexes:&lt;/span&gt;
+&lt;span class="go"&gt;    &amp;quot;tblasset_sw_asset_sw_id_key&amp;quot; UNIQUE, btree (asset_sw_id)&lt;/span&gt;
+&lt;span class="go"&gt;Foreign-key constraints:&lt;/span&gt;
+&lt;span class="go"&gt;    &amp;quot;tblasset_sw_asset_id_fkey&amp;quot; FOREIGN KEY (asset_id) REFERENCES tblasset(asset_id)&lt;/span&gt;
+&lt;span class="go"&gt;    &amp;quot;tblasset_sw_sw_id_fkey&amp;quot; FOREIGN KEY (sw_id) REFERENCES tblsw(sw_id)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+</summary><category term="postgresql"></category></entry><entry><title>Gnuplot chart in ascii block</title><link href="/gnuplot-chart-in-ascii-block.html" rel="alternate"></link><updated>2013-04-30T18:45:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-04-30:gnuplot-chart-in-ascii-block.html</id><summary type="html">&lt;p&gt;Given a simple 2 column text file as input file
+with the first column representing file size in bytes
+and the second column the timestamps in format Y-m-d.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;24481664624 2010-10-17
+49741909424 2010-10-18
+50440904239 2010-10-19
+51971254861 2010-10-20
+51887934671 2010-10-21
+48200114182 2010-10-22
+27754927745 2010-10-23
+24365406074 2010-10-24
+47137848754 2010-10-25
+46625748303 2010-10-26
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Create a gnuplot command file with following contents:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;terminal&lt;/span&gt; &lt;span class="n"&gt;dumb&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;grid&lt;/span&gt; &lt;span class="n"&gt;front&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="err"&gt;no&lt;/span&gt;&lt;span class="nb"&gt;key&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xdata&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;timefmt&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%Y-%m-%d&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xrange&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2012-05-01&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2013-05-01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;format&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%m/%y&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;ylabel&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Volume (GB)&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xlabel&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Time&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;style&lt;/span&gt; &lt;span class="n"&gt;fill&lt;/span&gt; &lt;span class="n"&gt;solids&lt;/span&gt;
+&lt;span class="k"&gt;plot&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;syslog_stats.txt&amp;quot;&lt;/span&gt; &lt;span class="nb"&gt;using&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1073741824&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nb"&gt;w&lt;/span&gt; &lt;span class="n"&gt;lines&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Output chart appears in the active terminal as an ascii block&lt;/p&gt;
+&lt;img alt="static/images/gnuplot_terminal.png" src="static/images/gnuplot_terminal.png" /&gt;
+</summary><category term="gnuplot"></category></entry><entry><title>Gnuplot chart in ascii block</title><link href="/gnuplot-chart-in-ascii-block.html" rel="alternate"></link><updated>2013-04-30T18:45:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-04-30:gnuplot-chart-in-ascii-block.html</id><summary type="html">&lt;p&gt;Given a simple 2 column text file as input file
+with the first column representing file size in bytes
+and the second column the timestamps in format Y-m-d.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;24481664624 2010-10-17
+49741909424 2010-10-18
+50440904239 2010-10-19
+51971254861 2010-10-20
+51887934671 2010-10-21
+48200114182 2010-10-22
+27754927745 2010-10-23
+24365406074 2010-10-24
+47137848754 2010-10-25
+46625748303 2010-10-26
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Create a gnuplot command file with following contents:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;terminal&lt;/span&gt; &lt;span class="n"&gt;dumb&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;grid&lt;/span&gt; &lt;span class="n"&gt;front&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="err"&gt;no&lt;/span&gt;&lt;span class="nb"&gt;key&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xdata&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;timefmt&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%Y-%m-%d&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xrange&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2012-05-01&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2013-05-01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;format&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%m/%y&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;ylabel&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Volume (GB)&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xlabel&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Time&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;style&lt;/span&gt; &lt;span class="n"&gt;fill&lt;/span&gt; &lt;span class="n"&gt;solids&lt;/span&gt;
+&lt;span class="k"&gt;plot&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;syslog_stats.txt&amp;quot;&lt;/span&gt; &lt;span class="nb"&gt;using&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1073741824&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nb"&gt;w&lt;/span&gt; &lt;span class="n"&gt;lines&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Output chart appears in the active terminal as an ascii block&lt;/p&gt;
+&lt;img alt="static/images/gnuplot_terminal.png" src="static/images/gnuplot_terminal.png" /&gt;
+</summary><category term="gnuplot"></category></entry></feed>
