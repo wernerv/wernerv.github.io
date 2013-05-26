@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>web2py deployment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="bailey">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="http://192.168.0.4:8000/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="http://192.168.0.4:8000/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="http://192.168.0.4:8000/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="http://192.168.0.4:8000/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="http://192.168.0.4:8000/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="http://192.168.0.4:8000/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://192.168.0.4:8000/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://192.168.0.4:8000/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="http://192.168.0.4:8000/" type="application/atom+xml" rel="alternate" title="Mnemosyne Semantic ATOM Feed" />
+    
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://192.168.0.4:8000/index.html">Mnemosyne Semantic </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                                                                    <li class="divider-vertical"></li>
+                                              <li class="active">
+                    <a href="http://192.168.0.4:8000/category/articles.html">
+						<i class="icon-folder-open icon-large"></i>articles
+					</a>
+                  </li>
+              
+                          <ul class="nav pull-right">
+                                <li><a href="http://192.168.0.4:8000/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+            <section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to web2py deployment">
+                                        web2py deployment
+                                </a>
+                                                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+                        <footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2013-05-23T20:05:00">
+        <i class="icon-calendar"></i>Thu 23 May 2013
+</abbr>
+<span class="label">By</span>
+<a href="http://192.168.0.4:8000/author/bailey.html"><i class="icon-user"></i>bailey</a>
+<span class="label">Category</span>
+<a href="http://192.168.0.4:8000/category/articles.html"><i class="icon-folder-open"></i>articles</a>.
+
+
+<span class="label">Tags</span>
+	<a href="http://192.168.0.4:8000/tag/web2py.html"><i class="icon-tag"></i>web2py</a>
+</footer><!-- /.post-info -->                </div>
+                <div class="section" id="todo">
+<h2>Todo</h2>
+<ul class="simple">
+<li>Update article to reflect new document path: /var/www instead of /home/www-data</li>
+<li>Update the webserver ports: 8080 and 8443 instead of the default 80 and 443.
+This also include changes to the apache config file and ports.conf (not yet documented)</li>
+<li>postgres user config and database setup including dump and restore of data</li>
+<li>enable secure access only in web2py model db.py</li>
+</ul>
+</div>
+<div class="section" id="platform">
+<h2>Platform</h2>
+<p>Linux distro depends on personal preference but I recommend Debian stable.
+Debian 6.0 or Debian 7.0 &quot;Wheezy&quot; as of May 4th 2013.</p>
+</div>
+<div class="section" id="applications">
+<h2>Applications</h2>
+<p>web2py offers an installation script to install apache+python+mod_wsgi+web2py+postgresql from scratch.
+Application versions that will be retrieved are outdated and the proposed document root is not optimal.
+Recommendation is to use the script as a guideline.</p>
+<div class="highlight"><pre><span class="go">wget http://web2py.googlecode.com/hg/scripts/setup-web2py-ubuntu.sh</span>
+<span class="go">chmod +x setup-web2py-ubuntu.sh</span>
+<span class="go">sudo ./setup-web2py-ubuntu.sh</span>
+</pre></div>
+<p>Below are the proposed packages:</p>
+<div class="highlight"><pre><span class="go">apt-get -y install ssh</span>
+<span class="go">apt-get -y install zip unzip</span>
+<span class="go">apt-get -y install tar</span>
+<span class="go">apt-get -y install openssh-server</span>
+<span class="go">apt-get -y install build-essential</span>
+<span class="go">apt-get -y install python2.5</span>
+<span class="go">apt-get -y install ipython</span>
+<span class="go">apt-get -y install python-dev</span>
+<span class="go">apt-get -y install postgresql</span>
+<span class="go">apt-get -y install apache2</span>
+<span class="go">apt-get -y install libapache2-mod-wsgi</span>
+<span class="go">apt-get -y install python2.5-psycopg2</span>
+<span class="go">apt-get -y install postfix</span>
+<span class="go">apt-get -y install wget</span>
+<span class="go">apt-get -y install python-matplotlib</span>
+<span class="go">apt-get -y install python-reportlab</span>
+<span class="go">apt-get -y install mercurial</span>
+</pre></div>
+<p>I recommend installing python2.7 with the corresponding postgres driver (pyscopg2).</p>
+<p>Packages postfix, wget, python-matplotlib, python-reportlab and mercurial seem optional imho.</p>
+</div>
+<div class="section" id="postgresql">
+<h2>Postgresql</h2>
+<p>Tested with version 8.4</p>
+</div>
+<div class="section" id="apache">
+<h2>Apache</h2>
+<div class="section" id="modules">
+<h3>modules</h3>
+<div class="highlight"><pre><span class="go">a2enmod ssl</span>
+<span class="go">a2enmod proxy</span>
+<span class="go">a2enmod proxy_http</span>
+<span class="go">a2enmod headers</span>
+<span class="go">a2enmod expires</span>
+<span class="go">a2enmod wsgi</span>
+</pre></div>
+</div>
+<div class="section" id="self-signed-certicate">
+<h3>self-signed certicate</h3>
+<div class="highlight"><pre><span class="go">mkdir /etc/apache2/ssl</span>
+<span class="go">openssl genrsa 1024 &gt; /etc/apache2/ssl/self_signed.key</span>
+<span class="go">chmod 400 /etc/apache2/ssl/self_signed.key</span>
+<span class="go">openssl req -new -x509 -nodes -sha1 -days 365 -key /etc/apache2/ssl/self_signed.key &gt; /etc/apache2/ssl/self_signed.cert</span>
+<span class="go">openssl x509 -noout -fingerprint -text &lt; /etc/apache2/ssl/self_signed.cert &gt; /etc/apache2/ssl/self_signed.info</span>
+</pre></div>
+</div>
+<div class="section" id="mod-wsgi">
+<h3>mod_wsgi</h3>
+<p>Replace /etc/apache2/sites-available/default with the config below.</p>
+<div class="highlight"><pre><span class="nb">NameVirtualHost</span> *:80
+<span class="nb">NameVirtualHost</span> *:443
+<span class="c"># If the WSGIDaemonProcess directive is specified outside of all virtual</span>
+<span class="c"># host containers, any WSGI application can be delegated to be run within</span>
+<span class="c"># that daemon process group.</span>
+<span class="c"># If the WSGIDaemonProcess directive is specified</span>
+<span class="c"># within a virtual host container, only WSGI applications associated with</span>
+<span class="c"># virtual hosts with the same server name as that virtual host can be</span>
+<span class="c"># delegated to that set of daemon processes.</span>
+<span class="nb">WSGIDaemonProcess</span> web2py <span class="k">user</span>=www-data <span class="k">group</span>=www-data
+
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+  <span class="nb">WSGIProcessGroup</span> web2py
+  <span class="nb">WSGIScriptAlias</span> / <span class="sx">/home/www-data/web2py/wsgihandler.py</span>
+  <span class="nb">WSGIPassAuthorization</span> <span class="k">On</span>
+
+  <span class="nt">&lt;Directory</span> <span class="s">/home/www-data/web2py</span><span class="nt">&gt;</span>
+    <span class="nb">AllowOverride</span> <span class="k">None</span>
+    <span class="nb">Order</span> Allow,Deny
+    <span class="nb">Deny</span> from <span class="k">all</span>
+    <span class="nt">&lt;Files</span> <span class="s">wsgihandler.py</span><span class="nt">&gt;</span>
+      <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Files&gt;</span>
+  <span class="nt">&lt;/Directory&gt;</span>
+
+  <span class="nb">AliasMatch</span> ^/([^/]+)/static/(.*) \
+           <span class="err">/home/www-data/web2py/applications/$1/static/$2</span>
+  <span class="nt">&lt;Directory</span> <span class="s">/home/www-data/web2py/applications/*/static/</span><span class="nt">&gt;</span>
+    <span class="nb">Options</span> -Indexes
+    <span class="nb">Order</span> Allow,Deny
+    <span class="nb">Allow</span> from <span class="k">all</span>
+  <span class="nt">&lt;/Directory&gt;</span>
+
+  <span class="nt">&lt;Location</span> <span class="s">/admin</span><span class="nt">&gt;</span>
+  <span class="nb">Deny</span> from <span class="k">all</span>
+  <span class="nt">&lt;/Location&gt;</span>
+
+  <span class="nt">&lt;LocationMatch</span> <span class="s">^/([^/]+)/appadmin</span><span class="nt">&gt;</span>
+  <span class="nb">Deny</span> from <span class="k">all</span>
+  <span class="nt">&lt;/LocationMatch&gt;</span>
+
+  <span class="nb">CustomLog</span> <span class="sx">/var/log/apache2/access.log</span> common
+  <span class="nb">ErrorLog</span> <span class="sx">/var/log/apache2/error.log</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+  <span class="nb">SSLEngine</span> <span class="k">on</span>
+  <span class="nb">SSLCertificateFile</span> <span class="sx">/etc/apache2/ssl/self_signed.cert</span>
+  <span class="nb">SSLCertificateKeyFile</span> <span class="sx">/etc/apache2/ssl/self_signed.key</span>
+
+  <span class="nb">WSGIProcessGroup</span> web2py
+  <span class="nb">WSGIScriptAlias</span> / <span class="sx">/home/www-data/web2py/wsgihandler.py</span>
+  <span class="nb">WSGIPassAuthorization</span> <span class="k">On</span>
+
+  <span class="nt">&lt;Directory</span> <span class="s">/home/www-data/web2py</span><span class="nt">&gt;</span>
+    <span class="nb">AllowOverride</span> <span class="k">None</span>
+    <span class="nb">Order</span> Allow,Deny
+    <span class="nb">Deny</span> from <span class="k">all</span>
+    <span class="nt">&lt;Files</span> <span class="s">wsgihandler.py</span><span class="nt">&gt;</span>
+      <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Files&gt;</span>
+  <span class="nt">&lt;/Directory&gt;</span>
+
+  <span class="nb">AliasMatch</span> ^/([^/]+)/static/(.*) \
+        <span class="err">/home/www-data/web2py/applications/$1/static/$2</span>
+
+  <span class="nt">&lt;Directory</span> <span class="s">/home/www-data/web2py/applications/*/static/</span><span class="nt">&gt;</span>
+    <span class="nb">Options</span> -Indexes
+    <span class="nb">ExpiresActive</span> <span class="k">On</span>
+    <span class="nb">ExpiresDefault</span> <span class="s2">&quot;access plus 1 hour&quot;</span>
+    <span class="nb">Order</span> Allow,Deny
+    <span class="nb">Allow</span> from <span class="k">all</span>
+  <span class="nt">&lt;/Directory&gt;</span>
+
+  <span class="nb">CustomLog</span> <span class="sx">/var/log/apache2/access.log</span> common
+  <span class="nb">ErrorLog</span> <span class="sx">/var/log/apache2/error.log</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="restart-apache">
+<h3>restart apache</h3>
+<div class="highlight"><pre><span class="go">/etc/init.d/apache2 restart</span>
+</pre></div>
+</div>
+<div class="section" id="web2py-admin-access">
+<h3>web2py admin access</h3>
+<div class="highlight"><pre><span class="go">cd /home/www-data/web2py</span>
+<span class="go">sudo -u www-data python -c &quot;from gluon.widget import console; console();&quot;</span>
+<span class="go">sudo -u www-data python -c &quot;from gluon.main import save_password; save_password(raw_input(&#39;admin password: &#39;),443)&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="web2py">
+<h2>web2py</h2>
+<p>Important: download the latest developer version instead of the regular stable release.
+The stable version has a bug which breaks the app and this seems to be fixed in the latest test release.</p>
+<div class="highlight"><pre><span class="go">cd /home</span>
+<span class="go">mkdir www-data</span>
+<span class="go">cd www-data</span>
+<span class="go">cd /home/www-data/</span>
+<span class="go">sudo wget http://web2py.com/examples/static/web2py_src.zip</span>
+<span class="go">sudo unzip web2py_src.zip</span>
+<span class="go">sudo chown -R www-data:www-data /home/www-data/web2py</span>
+</pre></div>
+</div>
+
+                </div><!-- /.entry-content -->
+                        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+            <ul class="nav nav-list">
+<li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
+<li><a href="http://192.168.0.4:8000/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+    <li><a href="http://github.com/wernerv"><i class="icon-github-sign icon-large"></i>github</a></li>
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="http://192.168.0.4:8000/category/articles.html">
+    <i class="icon-folder-open icon-large"></i>articles
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+<li class="tag-4">
+    <a href="http://192.168.0.4:8000/tag/web2py.html">
+        <i class="icon-tag icon-large"></i>web2py
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://192.168.0.4:8000/tag/gnuplot.html">
+        <i class="icon-tag icon-large"></i>gnuplot
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://192.168.0.4:8000/tag/postgresql.html">
+        <i class="icon-tag icon-large"></i>postgresql
+    </a>
+</li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+            
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://192.168.0.4:8000/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="http://192.168.0.4:8000/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>

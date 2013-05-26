@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Gnuplot chart in ascii block</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="bailey">
+
+    <!-- Le styles -->
+    <link rel="stylesheet" href="http://192.168.0.4:8000/theme/css/bootstrap.min.css" type="text/css" />
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+      .tag-1 {
+        font-size: 13pt;
+      }
+      .tag-2 {
+        font-size: 10pt;
+      }
+      .tag-2 {
+        font-size: 8pt;
+      }
+      .tag-4 {
+        font-size: 6pt;
+     }
+    </style>
+    <link href="http://192.168.0.4:8000/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link href="http://192.168.0.4:8000/theme/css/font-awesome.css" rel="stylesheet">
+
+    <link href="http://192.168.0.4:8000/theme/css/pygments.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="http://192.168.0.4:8000/theme/images/favicon.ico">
+    <link rel="apple-touch-icon" href="http://192.168.0.4:8000/theme/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="http://192.168.0.4:8000/theme/images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="http://192.168.0.4:8000/theme/images/apple-touch-icon-114x114.png">
+
+    <link href="http://192.168.0.4:8000/" type="application/atom+xml" rel="alternate" title="Mnemosyne Semantic ATOM Feed" />
+    
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://192.168.0.4:8000/index.html">Mnemosyne Semantic </a>
+          <div class="nav-collapse">
+            <ul class="nav">
+                                                                    <li class="divider-vertical"></li>
+                                              <li class="active">
+                    <a href="http://192.168.0.4:8000/category/articles.html">
+						<i class="icon-folder-open icon-large"></i>articles
+					</a>
+                  </li>
+              
+                          <ul class="nav pull-right">
+                                <li><a href="http://192.168.0.4:8000/archives.html"><i class="icon-th-list"></i>Archives</a></li>
+                          </ul>
+
+            </ul>
+            <!--<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>-->
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="span9" id="content">
+            <section id="content">
+        <article>
+                <header>
+                        <h1>
+                                <a href=""
+                                        rel="bookmark"
+                                        title="Permalink to Gnuplot chart in ascii block">
+                                        Gnuplot chart in ascii block
+                                </a>
+                                                        </h1>
+                </header>
+                <div class="entry-content">
+                <div class="well">
+                        <footer class="post-info">
+<span class="label">Date</span>
+<abbr class="published" title="2013-04-30T18:45:00">
+        <i class="icon-calendar"></i>Tue 30 April 2013
+</abbr>
+<span class="label">By</span>
+<a href="http://192.168.0.4:8000/author/bailey.html"><i class="icon-user"></i>bailey</a>
+<span class="label">Category</span>
+<a href="http://192.168.0.4:8000/category/articles.html"><i class="icon-folder-open"></i>articles</a>.
+
+
+<span class="label">Tags</span>
+	<a href="http://192.168.0.4:8000/tag/gnuplot.html"><i class="icon-tag"></i>gnuplot</a>
+</footer><!-- /.post-info -->                </div>
+                <p>Given a simple 2 column text file as input file
+with the first column representing file size in bytes
+and the second column the timestamps in format Y-m-d.</p>
+<div class="highlight"><pre>24481664624 2010-10-17
+49741909424 2010-10-18
+50440904239 2010-10-19
+51971254861 2010-10-20
+51887934671 2010-10-21
+48200114182 2010-10-22
+27754927745 2010-10-23
+24365406074 2010-10-24
+47137848754 2010-10-25
+46625748303 2010-10-26
+</pre></div>
+<p>Create a gnuplot command file with following contents:</p>
+<div class="highlight"><pre><span class="k">set</span> <span class="nb">terminal</span> <span class="n">dumb</span>
+<span class="k">set</span> <span class="nb">grid</span> <span class="n">front</span>
+<span class="k">set</span> <span class="err">no</span><span class="nb">key</span>
+<span class="k">set</span> <span class="nb">xdata</span> <span class="n">time</span>
+<span class="k">set</span> <span class="nb">timefmt</span> <span class="s">&quot;%Y-%m-%d&quot;</span>
+<span class="k">set</span> <span class="nb">xrange</span> <span class="p">[</span><span class="s">&quot;2012-05-01&quot;</span><span class="o">:</span><span class="s">&quot;2013-05-01&quot;</span><span class="p">]</span>
+<span class="k">set</span> <span class="nb">format</span> <span class="n">x</span> <span class="s">&quot;%m/%y&quot;</span>
+<span class="k">set</span> <span class="nb">ylabel</span> <span class="s">&quot;Volume (GB)&quot;</span>
+<span class="k">set</span> <span class="nb">xlabel</span> <span class="s">&quot;Time&quot;</span>
+<span class="k">set</span> <span class="nb">style</span> <span class="n">fill</span> <span class="n">solids</span>
+<span class="k">plot</span> <span class="s">&quot;syslog_stats.txt&quot;</span> <span class="nb">using</span> <span class="mi">2</span><span class="o">:</span><span class="p">(</span><span class="err">$</span><span class="mi">1</span><span class="o">/</span><span class="mi">1073741824</span><span class="p">)</span> <span class="nb">w</span> <span class="n">lines</span>
+</pre></div>
+<p>Output chart appears in the active terminal as an ascii block</p>
+<img alt="static/images/gnuplot_terminal.png" src="static/images/gnuplot_terminal.png" />
+
+                </div><!-- /.entry-content -->
+                        </article>
+</section>
+        </div><!--/span-->
+
+                <div class="span3 well sidebar-nav" id="sidebar">
+            <ul class="nav nav-list">
+<li class="nav-header"><h4><i class="icon-home icon-large"></i> social</h4></li>
+<li><a href="http://192.168.0.4:8000/" rel="alternate"><i class="icon-bookmark icon-large"></i>atom feed</a></li>
+    <li><a href="http://github.com/wernerv"><i class="icon-github-sign icon-large"></i>github</a></li>
+
+<li class="nav-header"><h4><i class="icon-folder-close icon-large"></i>Categories</h4></li>
+<li>
+<a href="http://192.168.0.4:8000/category/articles.html">
+    <i class="icon-folder-open icon-large"></i>articles
+</a>
+</li>
+
+<li class="nav-header"><h4><i class="icon-tags icon-large"></i>Tags</h4></li>
+<li class="tag-4">
+    <a href="http://192.168.0.4:8000/tag/web2py.html">
+        <i class="icon-tag icon-large"></i>web2py
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://192.168.0.4:8000/tag/gnuplot.html">
+        <i class="icon-tag icon-large"></i>gnuplot
+    </a>
+</li>
+<li class="tag-4">
+    <a href="http://192.168.0.4:8000/tag/postgresql.html">
+        <i class="icon-tag icon-large"></i>postgresql
+    </a>
+</li>
+
+
+</ul>        </div><!--/.well -->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <address id="about">
+                Proudly powered by <a href="http://pelican.notmyidea.org/">Pelican <i class="icon-external-link"></i></a>,
+                                which takes great advantage of <a href="http://python.org">Python <i class="icon-external-link"></i></a>.
+        </address><!-- /#about -->
+
+        <p>The theme is from <a href="http://twitter.github.com/bootstrap/">Bootstrap from Twitter <i class="icon-external-link"></i></a>,
+                   and <a href="http://fortawesome.github.com/Font-Awesome/">Font-Awesome <i class="icon-external-link"></i></a>, thanks!</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+
+            
+    <!-- Le javascript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://192.168.0.4:8000/theme/js/jquery-1.7.2.min.js"></script>
+    <script src="http://192.168.0.4:8000/theme/js/bootstrap.min.js"></script>
+  </body>
+</html>
