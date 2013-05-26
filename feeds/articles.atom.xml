@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Mnemosyne Semantic</title><link href="/" rel="alternate"></link><link href="/feeds/articles.atom.xml" rel="self"></link><id>/</id><updated>2013-05-23T20:05:00+10:00</updated><entry><title>web2py deployment</title><link href="/web2py-deployment.html" rel="alternate"></link><updated>2013-05-23T20:05:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-05-23:web2py-deployment.html</id><summary type="html">&lt;div class="section" id="todo"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Mnemosyne Semantic</title><link href="/" rel="alternate"></link><link href="/feeds/articles.atom.xml" rel="self"></link><id>/</id><updated>2013-05-26T17:05:00+10:00</updated><entry><title>pelican and github pages</title><link href="/pelican-and-github-pages.html" rel="alternate"></link><updated>2013-05-26T17:05:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-05-26:pelican-and-github-pages.html</id><summary type="html">&lt;p&gt;local machine:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+bailey&amp;#64;localhost &amp;gt;&amp;gt; ~ $ mkdir virtualenvs
+bailey&amp;#64;localhost &amp;gt;&amp;gt; ~ $ cd virtualenvs/
+bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/virtualenvs $ virtualenv ~/virtualenvs/pelican
+bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/virtualenvs $ cd pelican/
+bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/virtualenvs/pelican $ . bin/activate
+(pelican)bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/virtualenvs/pelican $ pip install pelican
+
+
+(pelican)bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/projects/pelican $ pip install ghp-import
+&lt;/pre&gt;
+</summary><category term="pelican"></category></entry><entry><title>web2py deployment</title><link href="/web2py-deployment.html" rel="alternate"></link><updated>2013-05-23T20:05:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-05-23:web2py-deployment.html</id><summary type="html">&lt;div class="section" id="todo"&gt;
 &lt;h2&gt;Todo&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Update article to reflect new document path: /var/www instead of /home/www-data&lt;/li&gt;
@@ -225,35 +237,6 @@ incremental integer value.&lt;/p&gt;
 &lt;span class="go"&gt;    &amp;quot;tblasset_sw_sw_id_fkey&amp;quot; FOREIGN KEY (sw_id) REFERENCES tblsw(sw_id)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 </summary><category term="postgresql"></category></entry><entry><title>Gnuplot chart in ascii block</title><link href="/gnuplot-chart-in-ascii-block.html" rel="alternate"></link><updated>2013-04-30T18:45:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-04-30:gnuplot-chart-in-ascii-block.html</id><summary type="html">&lt;p&gt;Given a simple 2 column text file as input file
-with the first column representing file size in bytes
-and the second column the timestamps in format Y-m-d.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;24481664624 2010-10-17
-49741909424 2010-10-18
-50440904239 2010-10-19
-51971254861 2010-10-20
-51887934671 2010-10-21
-48200114182 2010-10-22
-27754927745 2010-10-23
-24365406074 2010-10-24
-47137848754 2010-10-25
-46625748303 2010-10-26
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Create a gnuplot command file with following contents:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;terminal&lt;/span&gt; &lt;span class="n"&gt;dumb&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;grid&lt;/span&gt; &lt;span class="n"&gt;front&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="err"&gt;no&lt;/span&gt;&lt;span class="nb"&gt;key&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xdata&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;timefmt&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%Y-%m-%d&amp;quot;&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xrange&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2012-05-01&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;2013-05-01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;format&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;%m/%y&amp;quot;&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;ylabel&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Volume (GB)&amp;quot;&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;xlabel&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Time&amp;quot;&lt;/span&gt;
-&lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="nb"&gt;style&lt;/span&gt; &lt;span class="n"&gt;fill&lt;/span&gt; &lt;span class="n"&gt;solids&lt;/span&gt;
-&lt;span class="k"&gt;plot&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;syslog_stats.txt&amp;quot;&lt;/span&gt; &lt;span class="nb"&gt;using&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;1073741824&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nb"&gt;w&lt;/span&gt; &lt;span class="n"&gt;lines&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Output chart appears in the active terminal as an ascii block&lt;/p&gt;
-&lt;img alt="static/images/gnuplot_terminal.png" src="static/images/gnuplot_terminal.png" /&gt;
-</summary><category term="gnuplot"></category></entry><entry><title>Gnuplot chart in ascii block</title><link href="/gnuplot-chart-in-ascii-block.html" rel="alternate"></link><updated>2013-04-30T18:45:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-04-30:gnuplot-chart-in-ascii-block.html</id><summary type="html">&lt;p&gt;Given a simple 2 column text file as input file
 with the first column representing file size in bytes
 and the second column the timestamps in format Y-m-d.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;24481664624 2010-10-17
