@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Mnemosyne Semantic</title><link href="/" rel="alternate"></link><link href="/feeds/articles.atom.xml" rel="self"></link><id>/</id><updated>2013-05-26T17:05:00+10:00</updated><entry><title>pelican and github pages</title><link href="/pelican-and-github-pages.html" rel="alternate"></link><updated>2013-05-26T17:05:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-05-26:pelican-and-github-pages.html</id><summary type="html">&lt;p&gt;local machine:&lt;/p&gt;
-&lt;pre class="literal-block"&gt;
-bailey&amp;#64;localhost &amp;gt;&amp;gt; ~ $ mkdir virtualenvs
-bailey&amp;#64;localhost &amp;gt;&amp;gt; ~ $ cd virtualenvs/
-bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/virtualenvs $ virtualenv ~/virtualenvs/pelican
-bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/virtualenvs $ cd pelican/
-bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/virtualenvs/pelican $ . bin/activate
-(pelican)bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/virtualenvs/pelican $ pip install pelican
-
-
-(pelican)bailey&amp;#64;localhost &amp;gt;&amp;gt; ~/projects/pelican $ pip install ghp-import
-&lt;/pre&gt;
-</summary><category term="pelican"></category></entry><entry><title>web2py deployment</title><link href="/web2py-deployment.html" rel="alternate"></link><updated>2013-05-23T20:05:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-05-23:web2py-deployment.html</id><summary type="html">&lt;div class="section" id="todo"&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Mnemosyne Semantic</title><link href="/" rel="alternate"></link><link href="/feeds/articles.atom.xml" rel="self"></link><id>/</id><updated>2013-05-23T20:05:00+10:00</updated><entry><title>web2py deployment</title><link href="/web2py-deployment.html" rel="alternate"></link><updated>2013-05-23T20:05:00+10:00</updated><author><name>bailey</name></author><id>tag:,2013-05-23:web2py-deployment.html</id><summary type="html">&lt;div class="section" id="todo"&gt;
 &lt;h2&gt;Todo&lt;/h2&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Update article to reflect new document path: /var/www instead of /home/www-data&lt;/li&gt;
